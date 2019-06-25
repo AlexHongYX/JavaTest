@@ -37,10 +37,11 @@ public class PolymorphismTest{
         // Person per = new Person();
         // System.out.println(stu instanceof Person);
         // System.out.println(per instanceof Student);
-        // Student stu = new Person(); //直接向下转型错误
 
-        Person per = new Student();
-        Student stu = (Student)per;
+        Student stu = new Person(); //直接向下转型错误
+
+        Person per = new Student(); //先向上转型，再向下转型
+        Student stu1 = (Student)per;
     }
 
     public static void test(Person per){
