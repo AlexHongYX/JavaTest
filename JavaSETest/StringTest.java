@@ -8,5 +8,6 @@ public class StringTest{
         // System.out.println(str==str2);
         char c = "hello".charAt(1);
         System.out.println(c-32);
+        
     }
 }

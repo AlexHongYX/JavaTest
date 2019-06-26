@@ -1,47 +1,49 @@
+/**
+ *  简单工厂模式
+ */
 import java.util.Scanner;
 
 interface Computer{
-    void printComputer();
+    void buyComputer();
 }
 
-class MacbookPro implements Computer{
-    public void printComputer(){
-        System.out.println("This is a mac");
+class MacBookPro implements Computer{
+    public void buyComputer(){
+        System.out.println("This is MacBookPro");
     }
 }
 
-class SurfaceBook implements Computer{
-    public void printComputer(){
-        System.out.println("This is a surface");
-    }
-}
-
-class Alienware implements Computer{
-    public void printComputer(){
-        System.out.println("This is a alien");
+class AlienBook implements Computer{
+    public void buyComputer(){
+        System.out.println("This is AlienBook");
     }
 }
 
 class ComputerFactory{
-    public static Computer getInstance(String type){
+    public Computer buyComputer(String type){
         if(type.equals("mac")){
-            return new MacbookPro();
-        }else if(type.equals("surface")){
-            return new SurfaceBook();
+            return new MacBookPro();
         }else if(type.equals("alien")){
-            return new Alienware();
+            return new AlienBook();
         }
         return null;
     }
 }
 
+
 public class FactoryModelTest{
  
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("请选择电脑：");
+        System.out.println("Please input your choose:");
         String type = scanner.nextLine();
-        Computer computer = ComputerFactory.getInstance(type);
-        computer.printComputer();
+        ComputerFactory computerFactory = new ComputerFactory();
+        Computer computer = computerFactory.buyComputer(type);
+        if(computer!=null){
+            computer.buyComputer();
+        }else{
+            System.out.println("No such computer");
+        }
+        
     }
 }
