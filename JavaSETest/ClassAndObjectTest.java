@@ -16,7 +16,7 @@
 //          super.fan();
 //     }
 // }
-public Person{
+class Person{
     public String name = "Person";
     public int age = 20;
 }
