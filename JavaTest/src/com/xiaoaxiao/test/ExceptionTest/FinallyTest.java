@@ -1,4 +1,4 @@
-package com.xiaoaxiao.test.ExceptionTest;
+package com.xiaoaxiao.test.exceptionTest;
 
 /**
  * Created by xiaoaxiao on 2019/7/9
