@@ -1,4 +1,4 @@
-package com.xiaoaxiao.test.threadTest;
+package com.xiaoaxiao.test.thread_test;
 
 /**
  * Created by xiaoaxiao on 2019/7/11

@@ -1,8 +1,4 @@
-package com.xiaoaxiao.test.threadTest;
-
-import java.util.concurrent.Future;
-import java.util.concurrent.FutureTask;
-import java.util.concurrent.RunnableFuture;
+package com.xiaoaxiao.test.thread_test;
 
 /**
  * Created by xiaoaxiao on 2019/7/11
