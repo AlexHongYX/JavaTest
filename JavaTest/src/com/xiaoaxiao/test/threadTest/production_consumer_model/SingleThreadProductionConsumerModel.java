@@ -14,7 +14,7 @@ class Goods{
 
     // 生产商品方法
     public synchronized void set(String goodsName){
-        if(this.count>5){
+        while (this.count>5){
             try {
                 // 等待消费者消费
                 wait();
@@ -32,7 +32,7 @@ class Goods{
 
     // 消费商品方法
     public synchronized void get(){
-        if(this.count == 0){
+        while (this.count == 0){
             System.out.println("卖完了");
             try {
                 // 等待生产者生产
@@ -98,8 +98,9 @@ public class SingleThreadProductionConsumerModel {
         Thread producerThread = new Thread(producer);
         Thread customerThread = new Thread(customer);
 
-        customerThread.start();
+
         producerThread.start();
+        customerThread.start();
 
     }
 }
