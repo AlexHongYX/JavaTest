@@ -32,7 +32,7 @@ class ThreadA extends Thread{
                 b.start();
 
                 // Thread.sleep()不释放锁
-//                Thread.sleep(6000);
+                Thread.sleep(6000);
 
                 // Thread.join()释放了b的锁
                 b.join();
