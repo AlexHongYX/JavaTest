@@ -1,4 +1,4 @@
-package com.xiaoaxiao.test.designPattern;
+package com.xiaoaxiao.test.design_pattern.SingletonAndMultiton;
 
 /**
  * Created by xiaoaxiao on 2019/7/11
