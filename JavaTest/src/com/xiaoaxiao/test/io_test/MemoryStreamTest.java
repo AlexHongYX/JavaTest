@@ -1,4 +1,4 @@
-package com.xiaoaxiao.test.io_test.memory_stream_test;
+package com.xiaoaxiao.test.io_test;
 
 import java.io.*;
 

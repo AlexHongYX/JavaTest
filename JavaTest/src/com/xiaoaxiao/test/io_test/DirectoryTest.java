@@ -1,4 +1,4 @@
-package com.xiaoaxiao.test.io_test.file_test;
+package com.xiaoaxiao.test.io_test;
 
 import java.io.File;
 import java.util.Date;
