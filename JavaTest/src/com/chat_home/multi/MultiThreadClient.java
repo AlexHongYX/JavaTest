@@ -7,6 +7,7 @@ package com.xiaoaxiao.chat_home.multi;
  */
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Scanner;
 
@@ -26,18 +27,21 @@ class ReadFromServerThread implements Runnable{
     @Override
     public void run() {
         try {
-            Scanner scanner = new Scanner(this.client.getInputStream());
+            Scanner scanner = new Scanner(client.getInputStream());
             while (true){
                 if (scanner.hasNext()){
-                    System.out.println("从服务器发来的信息为："+scanner.nextLine());
+                    System.out.println("从服务器端接收信息："+scanner.nextLine());
                 }
+                // 若客户端退出，则此线程也应该退出
                 if (client.isClosed()){
                     System.out.println("客户端已关闭");
                     break;
                 }
             }
+            Thread.sleep(500);
+            // 关闭流
             scanner.close();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -56,6 +60,32 @@ class WriteToServerThread implements Runnable{
 
     @Override
     public void run() {
+        // 获取键盘输入
+        Scanner in = new Scanner(System.in);
+        // 获取客户端输出流
+        PrintStream printStream = null;
+        try {
+            printStream = new PrintStream(client.getOutputStream()
+                ,true,"UTF-8");
+
+            while (true){
+                System.out.println("请输入要发送的信息..");
+                String strToServer;
+                if (in.hasNext()){
+                    strToServer = in.nextLine();
+                    printStream.println(strToServer);
+                    if (strToServer.equals("byebye")){
+                        System.out.println("关闭客户端");
+                        in.close();
+                        printStream.close();
+                        client.close();
+                        break;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 }
@@ -67,6 +97,10 @@ public class MultiThreadClient {
             Socket client = new Socket("127.0.0.1",6666);
             Thread writeThread = new Thread(new WriteToServerThread(client));
             Thread readThread = new Thread(new ReadFromServerThread(client));
+
+            // 开启读线程与写线程
+            writeThread.start();
+            readThread.start();
         } catch (IOException e) {
             e.printStackTrace();
         }
