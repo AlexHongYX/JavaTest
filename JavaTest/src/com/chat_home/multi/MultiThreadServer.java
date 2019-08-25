@@ -19,8 +19,12 @@ import java.util.regex.Pattern;
  * Description: 多线程版本服务器端
  */
 
+// 使用线程实现服务端和客户端通信的业务处理
 class ExecuteClient implements Runnable{
 
+    // 所有线程共享
+    // 维护所有的连接到服务端的客户端对象
+    // ConcurrentHashMap是线程安全的，HashMap是线程不安全的所以不能用
     private static Map<String, Socket> clientMap = new
             ConcurrentHashMap<>();
 
@@ -47,14 +51,14 @@ class ExecuteClient implements Runnable{
                     // userName：用户名
                     if (strFromClient.startsWith("userName")){
                         // 先将字符串分割，将用户名传入对应函数
-                        String userName = strFromClient.split("\\:")[1];
+                        String userName = strFromClient.split(":")[1];
                         registerUser(userName);
                         continue;
                     }
                     // 群聊流程
                     // G：群聊内容
                     if (strFromClient.startsWith("G")){
-                        String groupMsg = strFromClient.split("\\:")[1];
+                        String groupMsg = strFromClient.split(":")[1];
                         groupChat(groupMsg);
                         continue;
                     }
@@ -62,9 +66,9 @@ class ExecuteClient implements Runnable{
                     // 私聊流程
                     // P：用户名-私聊内容
                     if (strFromClient.startsWith("P")){
-                        String userName = strFromClient.split("\\:")[1]
+                        String userName = strFromClient.split(":")[1]
                                         .split("-")[0];
-                        String privateMsg = strFromClient.split("\\:")[1]
+                        String privateMsg = strFromClient.split(":")[1]
                                         .split("-")[1];
                         privateChat(userName,privateMsg);
                         continue;
@@ -101,7 +105,7 @@ class ExecuteClient implements Runnable{
         }
     }
 
-    // 注册
+    // 注册以userName为key注册当前用户
     private void registerUser(String userName){
         System.out.println("用户"+userName+"上线啦");
         // 将用户信息保存在Map中
@@ -152,9 +156,6 @@ class ExecuteClient implements Runnable{
 }
 
 public class MultiThreadServer {
-
-
-
     public static void main(String[] args) {
         // 使用线程池接收多个客户端的连接请求
         ExecutorService executorService =

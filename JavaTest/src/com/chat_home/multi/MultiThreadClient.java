@@ -3,7 +3,7 @@ package com.xiaoaxiao.chat_home.multi;
 /**
  * Created by xiaoaxiao on 2019/8/3
  * Description: 多线程版本客户端
- *          读线程+写线程（保证写的同时可以读）
+ * 读线程+写线程（保证写的同时可以读）
  */
 
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.util.Scanner;
 /**
  * 读取服务器信息线程
  */
-class ReadFromServerThread implements Runnable{
+class ReadFromServerThread implements Runnable {
 
     // 无论是读线程还是写线程都需要同一个Socket
     // 通过构造方法将主函数中的socket传入
@@ -28,12 +28,12 @@ class ReadFromServerThread implements Runnable{
     public void run() {
         try {
             Scanner scanner = new Scanner(client.getInputStream());
-            while (true){
-                if (scanner.hasNext()){
-                    System.out.println("从服务器端接收信息："+scanner.nextLine());
+            while (true) {
+                if (scanner.hasNext()) {
+                    System.out.println("从服务器端接收信息：" + scanner.nextLine());
                 }
                 // 若客户端退出，则此线程也应该退出
-                if (client.isClosed()){
+                if (client.isClosed()) {
                     System.out.println("客户端已关闭");
                     break;
                 }
@@ -50,7 +50,7 @@ class ReadFromServerThread implements Runnable{
 /**
  * 将信息发送给服务器线程
  */
-class WriteToServerThread implements Runnable{
+class WriteToServerThread implements Runnable {
 
     private Socket client;
 
@@ -66,18 +66,20 @@ class WriteToServerThread implements Runnable{
         PrintStream printStream = null;
         try {
             printStream = new PrintStream(client.getOutputStream()
-                ,true,"UTF-8");
+                    , true, "UTF-8");
 
-            while (true){
+            while (true) {
                 System.out.println("请输入要发送的信息..");
                 String strToServer;
-                if (in.hasNext()){
+                if (in.hasNext()) {
                     strToServer = in.nextLine();
+                    // 必须先给服务器发送信息，再break
                     printStream.println(strToServer);
-                    if (strToServer.equals("byebye")){
+                    if (strToServer.equals("byebye")) {
                         System.out.println("关闭客户端");
                         in.close();
                         printStream.close();
+                        // 将client关闭，同时将读线程也关了与读线程的isClose相呼应
                         client.close();
                         break;
                     }
@@ -94,7 +96,7 @@ public class MultiThreadClient {
 
     public static void main(String[] args) {
         try {
-            Socket client = new Socket("127.0.0.1",6666);
+            Socket client = new Socket("127.0.0.1", 6666);
             Thread writeThread = new Thread(new WriteToServerThread(client));
             Thread readThread = new Thread(new ReadFromServerThread(client));
 

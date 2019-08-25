@@ -23,8 +23,10 @@ public class SingleThreadServer {
             ,true,"UTF-8");
         printStream.println("Hi,I am Server");
         // 服务器端接收客户端的输入
+        // 将字节流转换为字符流，通过Scanner的构造方法<源码中有>
         Scanner scanner = new Scanner(socket.getInputStream());
         if (scanner.hasNext()){
+            // 按行分割，一行一行的读
             System.out.println("客户端发来的信息为："+scanner.nextLine());
         }
         // 4、关闭流
