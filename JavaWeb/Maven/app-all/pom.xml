@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.xiaoaxiao</groupId>
+    <artifactId>app-all</artifactId>
+    <version>1.0.0</version>
+    <modules>
+        <module>app-1</module>
+        <module>app-2</module>
+    </modules>
+    <!--打包类型为pom类型-->
+    <packaging>pom</packaging>
+</project>

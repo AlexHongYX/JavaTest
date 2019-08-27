@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>app-all-inherit</artifactId>
+        <groupId>com.xiaoaxiao</groupId>
+        <version>1.0.0</version>
+    </parent>
+
+    <!--由于继承关系，子类可以省略groupId和version，与父类保持一致-->
+    <artifactId>app-1</artifactId>
+
+    <packaging>jar</packaging>
+
+
+</project>
