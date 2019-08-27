@@ -24,14 +24,13 @@ class SendFileThread implements Runnable{
         this.socket = socket;
         this.filePath = filePath;
         this.userName = userName;
-        this.endString = "File:"+userName+"-";
     }
 
     @Override
     public void run() {
         // 先判断传入的filePath是否合法(有没有这个文件)
         File file = new File(this.filePath);
-        // 若当前文件不存在则//TODO
+        // 若当前文件不存在则直接将空的endString返回回去，写线程判断endString是否为null就知道该文件是否存在了
         if(!file.exists()){
             System.out.println("文件不存在");
         }else{
@@ -53,6 +52,9 @@ class SendFileThread implements Runnable{
 //            } catch (IOException e) {
 //                e.printStackTrace();
 //            }
+
+            // 若当前文件是存在的，再设置endString
+            this.endString = "File$"+this.userName+"$";
             // 取得输入流
             try {
                 InputStream inputStream = new FileInputStream(file);
@@ -187,6 +189,8 @@ class WriteToServerThread implements Runnable {
         Scanner in = new Scanner(System.in);
         // 获取客户端输出流
         PrintStream printStream = null;
+        // 设定一个boolean值代表必须先进行注册
+        boolean isRegisted = false;
         try {
             printStream = new PrintStream(client.getOutputStream()
                     , true, "UTF-8");
@@ -196,23 +200,34 @@ class WriteToServerThread implements Runnable {
                 String strToServer;
                 if (in.hasNext()) {
                     strToServer = in.nextLine();
-                    // 如果输入的是文件发送相关
-                    /**
-                     *  File$userName$filePath
-                    */
-
-                    // 将输入的filePath替换成该文件路径对应的文件的字符串传给服务端
-                    if(strToServer.startsWith("File")){
-                        String filePath = strToServer.split("\\$")[2];
-                        System.out.println(filePath);
-                        String userName = strToServer.split("\\$")[1];
-                        System.out.println(userName);
-                        SendFileThread sendFileThread = new SendFileThread(this.client,userName,filePath);
-                        Thread thread = new Thread(sendFileThread);
-                        thread.start();
-                        thread.join();
-                        strToServer = sendFileThread.getNewStr();
-                        System.out.println(strToServer);
+                    // 必须要先注册再干其他的事情
+                    if(strToServer.matches("userName:[a-zA-Z0-9]{1,10}")){
+                        isRegisted = true;
+                    }else{
+                        // 只有当已经注册了，才可以干其他的事情(发文件)
+                        if(isRegisted){
+                            // 如果输入的是文件发送相关
+                            /**
+                             *  File$userName$fileContent
+                             */
+                            // 将输入的filePath替换成该文件路径对应的文件的字符串传给服务端
+                            if(strToServer.startsWith("File")){
+                                String filePath = strToServer.split("\\$")[2];
+                                System.out.println(filePath);
+                                String userName = strToServer.split("\\$")[1];
+                                System.out.println(userName);
+                                SendFileThread sendFileThread = new SendFileThread(this.client,userName,filePath);
+                                Thread thread = new Thread(sendFileThread);
+                                thread.start();
+                                thread.join();
+                                // 将strToServer最终格式转换为
+                                strToServer = sendFileThread.getNewStr();
+                                if(strToServer==null){
+                                    continue;
+                                }
+                                System.out.println(strToServer);
+                            }
+                        }
                     }
                     // 必须先给服务器发送信息，再break
                     printStream.println(strToServer);

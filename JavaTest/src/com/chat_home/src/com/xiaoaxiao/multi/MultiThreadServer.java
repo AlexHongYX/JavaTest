@@ -1,6 +1,5 @@
 package com.xiaoaxiao.multi;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.ServerSocket;
@@ -74,26 +73,33 @@ class ExecuteClient implements Runnable{
                         String username = findUsername();
                         if(username==null){
                             String message = "*********************************************\n" +
-                                    "**未注册或格式错误，输入 userName:<username>：进行注册(名字长度为1-10位字母与数字的组合<字母大小写均可>) **\n"+
+                                    "**未注册或格式错误，请先注册，输入 userName:<username>：进行注册(名字长度为1-10位字母与数字的组合<字母大小写均可>) **\n"+
                                     "*********************************************\n";
                             sendMessage(this.socket,message,true,false);
                         }else{
                             // 群聊流程
                             // G：群聊内容   strFromClient.startsWith("G:")
                             // 内容的正则可以是包括中文、标点、数字、字母在内的任意字符
+                            // 群聊内容是第一个":"后的内容，也不能用[1]表示(万一群聊内容中也有":")
                             if (strFromClient.matches("G:[\\u4e00-\\u9fa5\\w\\W]{0,100}")){
-                                String groupMsg = strFromClient.split(":")[1];
+                                // 直接将群聊前面的"G:"删掉，后面的即为群聊内容
+                                String groupMsg = strFromClient.substring(2);
                                 groupChat(groupMsg);
                                 continue;
                             }
 
                             // 私聊流程
                             // P：用户名-私聊内容   strFromClient.startsWith("P:")
-                            else if (strFromClient.matches("P:[a-zA-z0-9]{1,10}-[\\u4e00-\\u9fa5\\w\\W]{0,100}")){
-                                String userName = strFromClient.split(":")[1]
-                                        .split("-")[0];
-                                String privateMsg = strFromClient.split(":")[1]
-                                        .split("-")[1];
+                            // 私聊内容是第一个"-"后所有的字符串，如果后面字符串中包括"-"，只用一个[1]就不对了
+                            else if (strFromClient.matches("P:[a-zA-Z0-9]{1,10}-[\\u4e00-\\u9fa5\\w\\W]{0,100}")){
+                                // 将前面的"P:"直接删掉
+                                String str = strFromClient.substring(2);
+                                // 此时变成了"用户名-私聊内容"，用户名肯定是第一个"-"前的内容
+                                String userName = str.split("-")[0];
+                                // 将第一个"-"以及前面的内容都删掉(用户名)
+                                int index = str.indexOf("-");
+                                str = str.substring(index+1);
+                                String privateMsg = str;
                                 privateChat(userName,privateMsg);
                                 continue;
                             }
@@ -104,16 +110,29 @@ class ExecuteClient implements Runnable{
                                 byebye();
                                 continue;
                             }
-                            // 给某个用户发送文件
-                            // File：用户名-文件内容字符串
+
+                            // 给某个用户发送文件    strFromClient.matches("File$[a-zA-Z0-9]{1,10}$[\\u4e00-\\u9fa5\\w\\W]{0,100}")
+                            // File$用户名$文件内容字符串
                             else if(strFromClient.startsWith("File")){
-                                String userName = strFromClient.split(":")[1]
-                                        .split("-")[0];
-                                String fileContent = strFromClient.split(":")[1]
-                                        .split("-")[1];
+//                                System.out.println(strFromClient);
+                                //  该段文本中第一个$与第二个$之间的是username
+                                // 注意此处的$是需要转义的
+                                String userName = strFromClient.split("\\$")[1];
+                                System.out.println(userName);
+                                // 第二个$之后的所有文本都是fileContent，万一内容中也包含了$，只去个[2]不合适
+                                // 先将前面无用的"File$"去掉
+                                String str = strFromClient.substring(5);
+                                // 将得到的"用户名$文件内容字符串"按照$来拆分(先找到第一个$的位置)
+                                int index = str.indexOf("$");
+                                // 将第一个$之前的内容全部删掉
+                                str = str.substring(index+1);
+                                // 此时的str即为文件内容字符串
+                                String fileContent = str;
+                                System.out.println(fileContent);
                                 sendFile(userName,fileContent);
                                 continue;
                             }
+
                             // 如果输入的不是正确的消息，服务器端需要给客户端返回一条"帮助文档"
                             else{
                                 String message = "*********************************************\n" +
