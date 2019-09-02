@@ -14,4 +14,40 @@
         <servlet-name>IndexServlet</servlet-name>
         <url-pattern>/hello</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>MavenListServlet</servlet-name>
+        <servlet-class>com.xiaoaxiao.myfirst.servlet.MavenListServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MavenListServlet</servlet-name>
+        <url-pattern>/maven</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>ChanceServlet</servlet-name>
+        <servlet-class>com.xiaoaxiao.myfirst.servlet.ChanceServlet</servlet-class>
+        <!-- 该servlet中的初始化参数-->
+        <init-param>
+            <param-name>chance_number</param-name>
+            <param-value>20</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ChanceServlet</servlet-name>
+        <url-pattern>/chance</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ChancePlusServlet</servlet-name>
+        <servlet-class>com.xiaoaxiao.myfirst.servlet.ChancePlusServlet</servlet-class>
+        <init-param>
+            <param-name>chance_number</param-name>
+            <param-value>20</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ChancePlusServlet</servlet-name>
+        <url-pattern>/chancePlus</url-pattern>
+    </servlet-mapping>
 </web-app>

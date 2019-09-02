@@ -28,8 +28,8 @@ public class IndexServlet extends HttpServlet {
                     .append("</head>")
                     .append("<body>")
                         .append("<h1>")
-                            .append("Hello World!!")
-
+                            .append("Hello World!!<br/>")
+                            .append(LocalDateTime.now().toString())
                         .append("</h1>")
                     .append("</body>")
                 .append("</html>");
