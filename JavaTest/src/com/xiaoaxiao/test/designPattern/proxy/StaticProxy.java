@@ -1,10 +1,9 @@
 package com.xiaoaxiao.test.design_pattern.proxy;
 
-import java.lang.reflect.InvocationHandler;
 
 /**
  * Created by xiaoaxiao on 2019/7/24
- * Description: 静态（普通）代理模式
+ * Description: 静态（普通）代理模式——吃东西
  */
 
 interface IStaticSubject{
