@@ -6,9 +6,6 @@ package com.xiaoaxiao.binary_search_test;
  */
 
 import java.util.Comparator;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.concurrent.locks.Condition;
 
 /**
  * 创建一个实现了Comparable接口的类
@@ -60,6 +57,5 @@ public class TreeMapTest {
         Contact contact = new Contact("123","world");
         myTreeMap.put(person,contact);
         System.out.println(myTreeMap.get(person));
-
     }
 }
