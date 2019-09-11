@@ -25,4 +25,6 @@ public class CharacterEncodingFilter implements Filter {
     public void destroy() {
         // do nothing
     }
+
+
 }
