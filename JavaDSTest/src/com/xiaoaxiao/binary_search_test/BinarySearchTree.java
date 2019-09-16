@@ -153,21 +153,22 @@ public class BinarySearchTree {
      *          1、cur.left==null(默认包含了cur.left==null&&cur.right==null的情况)
      *              1.1 cur是其父节点的左节点
      *              1.2 cur是其父节点的右节点
-     *              1.3 cur是根节点
+         *          1.3 cur是根节点
      *          2、cur.right==null
      *              1.1 cur是其父节点的左节点
      *              1.2 cur是其父节点的右节点
      *              1.3 cur是根节点
      *          3、cur.left!=null&&cur.right!=null(替换法)
      *              找左子树最大/找右子树最小——以下操作使用找左子树最大
-     *              3.1 cur是其父节点的左节点(可能左子树最大的元素是要被删除结点的左子节点)
-     *              3.2 cur是其父节点的右节点(普通情况)
+     *              3.1 maxNode是其父节点的左节点(可能左子树最大的元素是要被删除结点的左子节点)
+     *              3.2 maxNode是其父节点的右节点(普通情况)
      */
     public int remove(int key){
         if(root == null){
             return -1;
         }
         Node cur = this.root;
+        // 设置被删除结点的父节点
         Node parent = null;
         int ret = -1;
         while(cur!=null){
@@ -179,7 +180,7 @@ public class BinarySearchTree {
                 cur = cur.right;
             }else {
                 ret = cur.value;
-                // 找到结点进行删除工作
+                // 找到结点进行删除工作，分为8种情况
                 if(cur.left == null){
                     if(cur==this.root){
                         ret = cur.value;
@@ -261,6 +262,7 @@ public class BinarySearchTree {
         if (this.root == null){
             return result;
         }
+        // 层序遍历
         Queue<Node> queue = new LinkedList<>();
         queue.offer(this.root);
         while (!queue.isEmpty()){
