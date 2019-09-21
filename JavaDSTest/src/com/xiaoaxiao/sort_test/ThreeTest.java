@@ -22,9 +22,9 @@ public class ThreeTest {
             swap(array,mid,low);
         }//array[mid] <= array[low]
 
-//        if(array[mid] > array[high]){
-//            swap(array,mid,high);
-//        }//array[mid] <= array[high]
+        if(array[mid] > array[high]){
+            swap(array,mid,high);
+        }//array[mid] <= array[high]
 
         if(array[low] > array[high]) {
             swap(array,low,high);
