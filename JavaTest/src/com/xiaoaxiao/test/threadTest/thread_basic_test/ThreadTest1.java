@@ -1,4 +1,4 @@
-package com.xiaoaxiao.test.thread_test;
+package com.xiaoaxiao.test.thread_test.thread_basic_test;
 
 /**
  * Created by xiaoaxiao on 2019/7/11
@@ -28,5 +28,6 @@ public class ThreadTest1 {
         myThread1.start();
         myThread11.start();
         myThread111.start();
+        System.out.println("This is main");
     }
 }

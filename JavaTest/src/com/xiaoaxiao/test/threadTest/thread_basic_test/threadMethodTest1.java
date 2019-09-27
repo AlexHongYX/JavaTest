@@ -1,4 +1,4 @@
-package com.xiaoaxiao.test.thread_test;
+package com.xiaoaxiao.test.thread_test.thread_basic_test;
 
 /**
  * Created by xiaoaxiao on 2019/7/12
@@ -9,16 +9,16 @@ class MyRunnable2 implements Runnable{
 
     @Override
     public void run() {
-        for(int i=0;i<10;i++){
+        for(int i=0;i<3;i++){
             System.out.println(Thread.currentThread().getName());
-//            // sleep()
-//            try {
-//                Thread.sleep(1000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
+            // sleep()
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             // yield()
-            Thread.yield();
+//            Thread.yield();
 
         }
     }

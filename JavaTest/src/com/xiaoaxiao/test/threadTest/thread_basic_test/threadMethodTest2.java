@@ -1,4 +1,4 @@
-package com.xiaoaxiao.test.thread_test;
+package com.xiaoaxiao.test.thread_test.thread_basic_test;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
