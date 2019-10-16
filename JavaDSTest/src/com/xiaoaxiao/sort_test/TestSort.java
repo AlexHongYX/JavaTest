@@ -116,7 +116,7 @@ public class TestSort {
 
     /**
      * 冒泡排序
-     * 时间复杂度：O(n²),优化后：O(n)
+     * 时间复杂度：O(n²),最好：O(n)——>有序了
      * 空间复杂度：O(1)
      * 稳定性：稳定(没有进行跳跃式交换)
      *
@@ -262,6 +262,9 @@ public class TestSort {
     /**
      * 三数取中
      * array[mid] <= array[low] <= array[high]
+     *  三数取中：让基准值为中间值array[low]
+     *          start和end相交处基本在数组的中间位置，将基准值设置为中间值
+     *          使得左右两边都有数组，不会出现一边没有一边有的情况（递归效率低）
      *
      * @param array 形参数组
      * @param low   low下标
@@ -289,6 +292,13 @@ public class TestSort {
 
     /**
      * 递归归并排序
+     * 时间复杂度：O(nlogn)
+     * 空间复杂度：O(n)
+     * 稳定性：稳定
+     * // 若array[start1] == array[start2]，则先将start1对应的值加入到辅助数组中
+     * // 由于start1<start2，排序前array[start1]在array[start2]前
+     * // 而排序后，array[start1]依旧在array[start2]前
+     * // 因此，归并排序是稳定的
      *
      * @param array 形参数组
      */
@@ -303,7 +313,7 @@ public class TestSort {
     }
 
     /**
-     * 递归排序算法的实现
+     * 递归归并排序算法的实现
      *
      * @param array    形参数组
      * @param start    归并开始位置
@@ -321,6 +331,10 @@ public class TestSort {
 
         // 保证有两个归并段
         while (start <= mid && s2 <= end) {
+            // 若array[start] == array[s2]，则先将start对应的值加入到辅助数组中
+            // 由于start<s2，排序前array[start]在array[s2]前
+            // 而排序后，array[start]依旧在array[s2]前
+            // 因此，归并排序是稳定的
             if (array[start] <= array[s2]) {
                 tmpArray[tmpIndex++] = array[start++];
             } else {
@@ -382,6 +396,10 @@ public class TestSort {
         while (start2 < array.length) {
             // 完成1次归并排序
             while (start1 <= end1 && start2 <= end2) {
+                // 若array[start1] == array[start2]，则先将start1对应的值加入到辅助数组中
+                // 由于start1<start2，排序前array[start1]在array[start2]前
+                // 而排序后，array[start1]依旧在array[start2]前
+                // 因此，归并排序是稳定的
                 if (array[start1] <= array[start2]) {
                     tmpArray[tmpIndex++] = array[start1++];
                 } else {
@@ -389,11 +407,11 @@ public class TestSort {
                 }
             }
             // 下面两个while循环对应上面循环跳出的两种情况
-            while (start1<=end1){
+            while (start1 <= end1) {
                 tmpArray[tmpIndex++] = array[start1++];
             }
 
-            while (start2<=end2){
+            while (start2 <= end2) {
                 tmpArray[tmpIndex++] = array[start2++];
             }
             start1 = end2 + 1;
