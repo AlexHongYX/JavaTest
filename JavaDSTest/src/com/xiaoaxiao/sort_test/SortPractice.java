@@ -1,6 +1,7 @@
 package com.xiaoaxiao.sort_test;
 
 import java.util.Arrays;
+import java.util.Random;
 import java.util.Stack;
 
 /**
@@ -11,12 +12,20 @@ import java.util.Stack;
  */
 public class SortPractice {
     public static void main(String[] args) {
-        int[] array = {6, 1, 2, 7, 9, 3, 4, 5, 10, 8};
+//        int[] array = {6, 1, 2, 7, 9, 3, 4, 5, 10, 8};
+
+        int[] array = new int[100000];
+        Random random = new Random();
+        for (int i = 0; i < array.length; i++) {            // 设置数组的值为[1-100000]中的随机数
+            array[i] = random.nextInt(100000) + 1;
+        }
+        System.out.println(Arrays.toString(array));
 //        insertSort(array);
 //        shellSort(array);
 //        selectSort(array);
-        bubbleSort(array);
+//        bubbleSort(array);
 //        quickSortRec(array);
+        heapSort(array);
 //        quickSortNonRec(array);
 //        mergeSortRec(array);
 //        mergeSortNonRec(array);
@@ -25,7 +34,7 @@ public class SortPractice {
 
 
     private static void bubbleSort(int[] array) {
-        for (int i = 0; i < array.length; i++) {
+        for (int i = 0; i < array.length - 1; i++) {
             boolean flag = true;
             for (int j = 0; j < array.length - i - 1; j++) {
                 if (array[j] > array[j + 1]) {
@@ -35,7 +44,6 @@ public class SortPractice {
                     flag = false;
                 }
             }
-
             if (flag) {
                 break;
             }
@@ -47,73 +55,109 @@ public class SortPractice {
     }
 
     private static void quickRec(int[] array, int start, int end) {
-        if (end - start + 1 < 16) {
-            insertSort2(array, start, end);
+        if (end-start+1 < 16) {
+            insertSort2(array, 0, end);
         } else {
-
-            medianOfThree(array,start,end);
+            medianOfThree(array, start, end);
             int par = partion(array, start, end);
-            if (par > start + 1) {
+            if (par > start+1) {
                 quickRec(array, start, par - 1);
             }
-            if (par < end - 1) {
+            if (par < end-1) {
                 quickRec(array, par + 1, end);
             }
         }
     }
 
     private static void insertSort2(int[] array, int start, int end) {
-        for (int i = start + 1; i <= end; i++) {
-            int j = i-1;
+        for (int i = start; i <= end; i++) {
             int tmp = array[i];
-            while (j>=0&&array[j]>tmp){
-                array[j+1] = array[j];
+            int j = i - 1;
+            while (j >= start&&array[j]>tmp) {
+                array[j + 1] = array[j];
                 j--;
             }
-            array[j+1] = tmp;
+            array[j + 1] = tmp;
         }
     }
 
     private static void medianOfThree(int[] array, int start, int end) {
-        int mid = (start+end)/2;
-        if(array[start]>array[end]){
-            int tmp = array[start];
-            array[start] = array[end];
-            array[end] = tmp;
+        int mid = (start + end) / 2;
+        if (array[mid] > array[start]) {
+            int tmp = array[mid];
+            array[mid] = array[start];
+            array[start] = tmp;
         }
-        if (array[mid]>array[end]){
+        if (array[mid] > array[end]) {
             int tmp = array[mid];
             array[mid] = array[end];
             array[end] = tmp;
         }
-        if (array[mid]>array[start]){
-            int tmp = array[mid];
-            array[mid] = array[start];
-            array[start] = tmp;
+        if (array[start] > array[end]) {
+            int tmp = array[start];
+            array[start] = array[end];
+            array[end] = tmp;
         }
     }
 
     private static int partion(int[] array, int start, int end) {
         int tmp = array[start];
-        while (start < end) {
-            while (start < end && array[end] >= tmp) {
+        while (start<end){
+            while (start<end&&array[end]>=tmp){
                 end--;
             }
-            if (start < end) {
+
+            if (start<end){
                 array[start] = array[end];
-            } else {
+            }else {
                 break;
             }
-            while (start < end && array[start] < tmp) {
+
+            while (start<end&&array[start]<tmp){
                 start++;
             }
-            if (start < end) {
+
+            if (start<end){
                 array[end] = array[start];
             }
         }
         array[start] = tmp;
         return start;
+//        return 0;
     }
+
+    private static void heapSort(int[] array) {
+        for (int i = array.length/2-1; i >= 0 ; i--) {
+            adjustDown(array,array.length,i);
+        }
+        for (int i = array.length-1; i >= 1 ; i--) {
+            int tmp = array[i];
+            array[i] = array[0];
+            array[0] = tmp;
+            adjustDown(array,i,0);
+        }
+    }
+
+    private static void adjustDown(int[] array, int length, int i) {
+        int parent = i;
+        int child = parent*2+1;
+        while (child<length){
+            if (child+1<length&&array[child+1]>array[child]){
+                child++;
+            }
+            if(array[child]>array[parent]){
+                int tmp = array[child];
+                array[child] = array[parent];
+                array[parent] = tmp;
+
+                parent = child;
+                child = parent*2+1;
+            }else {
+                break;
+            }
+        }
+    }
+
 
     private static void quickSortNonRec(int[] array) {
 

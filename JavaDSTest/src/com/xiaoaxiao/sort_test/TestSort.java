@@ -23,14 +23,17 @@ public class TestSort {
 //        selectSort(array);
 //        bubbleSort(array);
 //        System.out.println(partion(array,0,array.length-1));\
-//        quickSort(array);
+
 //        quickSort2(array);
         long startTime = System.currentTimeMillis();
         // 递归中不要创建太大的空间，因此将tmpArray在主函数中创建
 //        int[] tmpArray = new int[array.length];
 //        mergeSort(array, 0, array.length - 1, tmpArray);
-        mergeSort2(array);
+//        mergeSort2(array);
+//        heapSort(array);
+        quickSort(array);
         long endTime = System.currentTimeMillis();
+        System.out.println("====================");
         System.out.println(Arrays.toString(array));
         System.out.println("共耗时：" + (endTime - startTime) + "ms");
     }
@@ -251,8 +254,6 @@ public class TestSort {
             }
             if (low < high) {
                 array[high] = array[low];
-            } else {
-                break;
             }
         }
         array[low] = tmp;
@@ -262,9 +263,9 @@ public class TestSort {
     /**
      * 三数取中
      * array[mid] <= array[low] <= array[high]
-     *  三数取中：让基准值为中间值array[low]
-     *          start和end相交处基本在数组的中间位置，将基准值设置为中间值
-     *          使得左右两边都有数组，不会出现一边没有一边有的情况（递归效率低）
+     * 三数取中：让基准值为中间值array[low]
+     * start和end相交处基本在数组的中间位置，将基准值设置为中间值
+     * 使得左右两边都有数组，不会出现一边没有一边有的情况（递归效率低）
      *
      * @param array 形参数组
      * @param low   low下标
@@ -488,4 +489,67 @@ public class TestSort {
 //            array[j] = tmpArray[j];
 //        }
 //    }
+
+    /**
+     * 堆排序
+     * 升序：大根堆
+     * 降序：小根堆
+     * 1、初始化大/小根堆：向前遍历+向下调整
+     * 2、大/根堆->变有序：堆顶元素与最后一个元素交换（向前遍历）+向下调整
+     *
+     * @param array 形参数组
+     */
+    private static void heapSort(int[] array) {
+        // 初始化堆，先找到最后一个根节点
+        for (int i = array.length / 2 - 1; i >= 0; i--) {
+            // 最好把数组的长度也传进去
+            adjustDown(array, array.length, i);
+        }
+        // 从最后一个结点向前，与根节点进行交换，并对根节点进行向下调整
+        // 因为数组本身就是大根堆，所以调整完的最后一个结点肯定是当前最大的值
+        // 当i==0是不需要再比较了，就剩一个结点了，肯定是最小的
+        for (int i = array.length-1; i > 0; i--) {
+            int tmp = array[i];
+            array[i] = array[0];
+            array[0] = tmp;
+            // i后面都是调整好了的，所以缩减树的容量
+            // i刚好代表当前树的length，array[i]已经和array[0]交换了，已经是最大的了
+            // 此时不会再取到array[i]了，因此把i直接当length即可，代替写array.length
+            adjustDown(array,i,0);
+        }
+    }
+
+    /**
+     * 向下调整
+     *
+     * @param array  形参数组
+     * @param length 数组长度（最好传进去）
+     * @param i      当前根节点的位置
+     */
+    private static void adjustDown(int[] array, int length, int i) {
+        int parent = i;
+        // child代表的是两个子节点中较大的那一个，先将其设置为左子节点
+        int child = parent * 2 + 1;
+        while (child < length) {
+            // 如果右子节点的值比左子节点的大，则child=右子节点(child++)
+            if (child + 1 < length && array[child + 1] > array[child]) {
+                child++;
+            }
+            // 比较当前子节点中较大的值和根节点值的大小关系
+            if (array[child] > array[parent]) {
+                // 交换子节点和根节点
+                int tmp = array[child];
+                array[child] = array[parent];
+                array[parent] = tmp;
+
+                // 由于向下调整之后可能会导致下面的树出现问题，因此需要一直向下遍历
+                // 直到child>=length为止
+                parent = child;
+                child = parent*2+1;
+            } else {
+                // 如果当前节点子节点的值比根节点小，则说明已经是大根堆了，直接break
+                break;
+            }
+        }
+    }
 }

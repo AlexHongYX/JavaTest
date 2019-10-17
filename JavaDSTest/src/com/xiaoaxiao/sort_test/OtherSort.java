@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * Created by xiaoaxiao on 2019/9/23
- * Description: 非比较排序
+ * Description: 非比较排序——知道思想即可，没必要写代码
  *      桶排序，基数排序，计数排序
  */
 public class OtherSort {
@@ -13,6 +13,7 @@ public class OtherSort {
 
     public static void radixSortA(String[] arr,int stringLen){
 
+        // 泛型数组不能直接定义，需要将Object数组强转为对应的泛型数组
         @SuppressWarnings("checked")
         ArrayList<String>[] buckets = (ArrayList<String>[])new Object[BUCKETS];
 
