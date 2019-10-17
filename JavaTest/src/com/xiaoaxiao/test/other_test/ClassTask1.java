@@ -6,6 +6,7 @@ import static com.xiaoaxiao.test.other_test.ClassTask2.*;
  */
 public class ClassTask1 {
     public void test(int year){
+
         switch (year%12){
             case 0:
                 System.out.println("猴");

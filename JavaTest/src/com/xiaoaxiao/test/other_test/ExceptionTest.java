@@ -6,5 +6,4 @@ package com.xiaoaxiao.test.other_test;
  */
 public class ExceptionTest {
 
-
 }
