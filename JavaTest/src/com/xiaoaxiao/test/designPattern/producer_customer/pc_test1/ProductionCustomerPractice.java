@@ -1,4 +1,4 @@
-package com.xiaoaxiao.test.design_pattern.practice.pc_test1;
+package com.xiaoaxiao.test.design_pattern.producer_customer.pc_test1;
 
 import java.util.ArrayList;
 import java.util.List;
