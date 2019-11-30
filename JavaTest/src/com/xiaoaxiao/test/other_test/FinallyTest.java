@@ -12,7 +12,7 @@ public class FinallyTest {
 
     public static int test(){
         try {
-            System.out.println(10/0);
+            System.out.println(10.0%2.4);
             return 0;
         }catch (Exception e){
             return 1;
